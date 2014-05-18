@@ -11,11 +11,33 @@ namespace Capstone.Domain.Concrete
     public class UserRepository : UserInterface
     {
 
+
         public void AddUser(Entities.User u)
         {
+          try
+          {
             var db = new CapstoneDbContext();
             db.Users.Add(u);
-            db.SaveChanges();
+
+                db.SaveChanges();
+          }
+          catch (System.Data.Entity.Validation.DbEntityValidationException dbEx) //Catches errors in creating the db User table for the first time
+          {
+              Exception raise = dbEx;
+              foreach (var validationErrors in dbEx.EntityValidationErrors)
+              {
+                  foreach (var validationError in validationErrors.ValidationErrors)
+                  {
+                      string message = string.Format("{0}:{1}",
+                          validationErrors.Entry.Entity.ToString(),
+                          validationError.ErrorMessage);
+                      // raise a new exception nesting
+                      // the current instance as InnerException
+                      raise = new InvalidOperationException(message, raise);
+                  }
+              }
+              throw raise;
+          }
         }
 
         public Entities.User GetUser(int userId)

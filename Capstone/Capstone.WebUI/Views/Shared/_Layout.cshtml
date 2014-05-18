@@ -25,7 +25,12 @@
     </div>
 
     <div id="BreadCrumb">
-        @Html.MvcSiteMap().SiteMapPath()
+       @{
+           //The site map is breaking things - we need to figure out how to re-integrate it 
+         
+         //@Html.MvcSiteMap().SiteMapPath() 
+         
+       }
     </div>
 
 
@@ -51,7 +56,10 @@
             <br />
             <br />
             For testing: 
-            @Html.MvcSiteMap().Menu()
+``@{
+    //The site map is breaking things - we need to figure out how to re-integrate it
+    //        @Html.MvcSiteMap().Menu()
+   }
         </div>
 
     </div>
